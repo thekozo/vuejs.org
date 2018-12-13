@@ -30,13 +30,14 @@ Simply download and include with a script tag. `Vue` will be registered as a glo
 <a class="button" href="/js/vue.js" download>Development Version</a><span class="light info">With full warnings and debug mode</span>
 
 <a class="button" href="/js/vue.min.js" download>Production Version</a><span class="light info">Warnings stripped, {{gz_size}}KB min+gzip</span>
+
 </div>
 
 ### CDN
 
 We recommend linking to a specific version number that you can update manually:
 
-``` html
+```html
 <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
 ```
 
@@ -45,13 +46,13 @@ You can browse the source of the NPM package at [cdn.jsdelivr.net/npm/vue](https
 Vue is also available on [unpkg](https://unpkg.com/vue@{{vue_version}}/dist/vue.js) and [cdnjs](https://cdnjs.cloudflare.com/ajax/libs/vue/{{vue_version}}/vue.js) (cdnjs takes some time to sync so the latest release may not be available yet).
 
 Make sure to read about [the different builds of Vue](#Explanation-of-Different-Builds) and use the **production
- version** in your published site, replacing `vue.js` with `vue.min.js`. This is a smaller build optimized for speed instead of development experience.
+version** in your published site, replacing `vue.js` with `vue.min.js`. This is a smaller build optimized for speed instead of development experience.
 
 ## NPM
 
 NPM is the recommended installation method when building large scale applications with Vue. It pairs nicely with module bundlers such as [Webpack](https://webpack.js.org/) or [Browserify](http://browserify.org/). Vue also provides accompanying tools for authoring [Single File Components](single-file-components.html).
 
-``` bash
+```bash
 # latest stable
 $ npm install vue
 ```
@@ -62,16 +63,18 @@ Vue provides an [official CLI](https://github.com/vuejs/vue-cli) for quickly sca
 
 <p class="tip">The CLI assumes prior knowledge of Node.js and the associated build tools. If you are new to Vue or front-end build tools, we strongly suggest going through <a href="./">the guide</a> without any build tools before using the CLI.</p>
 
+<div class="vue-mastery"><a href="https://www.vuemastery.com/courses/real-world-vue-js/vue-cli" target="_blank" rel="noopener" title="Vue CLI">Watch a video explination on Vue Mastery</a></div>
+
 ## Explanation of Different Builds
 
 In the [`dist/` directory of the NPM package](https://cdn.jsdelivr.net/npm/vue/dist/) you will find many different builds of Vue.js. Here's an overview of the difference between them:
 
-| | UMD | CommonJS | ES Module |
-| --- | --- | --- | --- |
-| **Full** | vue.js | vue.common.js | vue.esm.js |
-| **Runtime-only** | vue.runtime.js | vue.runtime.common.js | vue.runtime.esm.js |
-| **Full (production)** | vue.min.js | - | - |
-| **Runtime-only (production)** | vue.runtime.min.js | - | - |
+|                               | UMD                | CommonJS              | ES Module          |
+| ----------------------------- | ------------------ | --------------------- | ------------------ |
+| **Full**                      | vue.js             | vue.common.js         | vue.esm.js         |
+| **Runtime-only**              | vue.runtime.js     | vue.runtime.common.js | vue.runtime.esm.js |
+| **Full (production)**         | vue.min.js         | -                     | -                  |
+| **Runtime-only (production)** | vue.runtime.min.js | -                     | -                  |
 
 ### Terms
 
@@ -91,18 +94,18 @@ In the [`dist/` directory of the NPM package](https://cdn.jsdelivr.net/npm/vue/d
 
 If you need to compile templates on the client (e.g. passing a string to the `template` option, or mounting to an element using its in-DOM HTML as the template), you will need the compiler and thus the full build:
 
-``` js
+```js
 // this requires the compiler
 new Vue({
-  template: '<div>{{ hi }}</div>'
-})
+  template: "<div>{{ hi }}</div>"
+});
 
 // this does not
 new Vue({
-  render (h) {
-    return h('div', this.hi)
+  render(h) {
+    return h("div", this.hi);
   }
-})
+});
 ```
 
 When using `vue-loader` or `vueify`, templates inside `*.vue` files are pre-compiled into JavaScript at build time. You don't really need the compiler in the final bundle, and can therefore use the runtime-only build.
@@ -111,37 +114,37 @@ Since the runtime-only builds are roughly 30% lighter-weight than their full-bui
 
 #### Webpack
 
-``` js
+```js
 module.exports = {
   // ...
   resolve: {
     alias: {
-      'vue$': 'vue/dist/vue.esm.js' // 'vue/dist/vue.common.js' for webpack 1
+      vue$: "vue/dist/vue.esm.js" // 'vue/dist/vue.common.js' for webpack 1
     }
   }
-}
+};
 ```
 
 #### Rollup
 
-``` js
-const alias = require('rollup-plugin-alias')
+```js
+const alias = require("rollup-plugin-alias");
 
 rollup({
   // ...
   plugins: [
     alias({
-      'vue': 'vue/dist/vue.esm.js'
+      vue: "vue/dist/vue.esm.js"
     })
   ]
-})
+});
 ```
 
 #### Browserify
 
 Add to your project's `package.json`:
 
-``` js
+```js
 {
   // ...
   "browser": {
@@ -154,7 +157,7 @@ Add to your project's `package.json`:
 
 Add to your project's `package.json`:
 
-``` js
+```js
 {
   // ...
   "alias": {
@@ -175,35 +178,35 @@ CommonJS and ES Module builds also preserve raw checks for `process.env.NODE_ENV
 
 In Webpack 4+, you can use the `mode` option:
 
-``` js
+```js
 module.exports = {
-  mode: 'production'
-}
+  mode: "production"
+};
 ```
 
 But in Webpack 3 and earlier, you'll need to use [DefinePlugin](https://webpack.js.org/plugins/define-plugin/):
 
-``` js
-var webpack = require('webpack')
+```js
+var webpack = require("webpack");
 
 module.exports = {
   // ...
   plugins: [
     // ...
     new webpack.DefinePlugin({
-      'process.env': {
-        NODE_ENV: JSON.stringify('production')
+      "process.env": {
+        NODE_ENV: JSON.stringify("production")
       }
     })
   ]
-}
+};
 ```
 
 #### Rollup
 
 Use [rollup-plugin-replace](https://github.com/rollup/rollup-plugin-replace):
 
-``` js
+```js
 const replace = require('rollup-plugin-replace')
 
 rollup({
@@ -220,7 +223,7 @@ rollup({
 
 Apply a global [envify](https://github.com/hughsk/envify) transform to your bundle.
 
-``` bash
+```bash
 NODE_ENV=production browserify -g envify -e main.js | uglifyjs -c -m > build.js
 ```
 
@@ -236,7 +239,7 @@ On the other hand, the runtime-only build is fully CSP-compliant. When using the
 
 **Important**: the built files in GitHub's `/dist` folder are only checked-in during releases. To use Vue from the latest source code on GitHub, you will have to build it yourself!
 
-``` bash
+```bash
 git clone https://github.com/vuejs/vue.git node_modules/vue
 cd node_modules/vue
 npm install
@@ -247,7 +250,7 @@ npm run build
 
 Only UMD builds are available from Bower.
 
-``` bash
+```bash
 # latest stable
 $ bower install vue
 ```
